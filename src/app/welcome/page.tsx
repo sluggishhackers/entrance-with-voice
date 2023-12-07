@@ -22,11 +22,14 @@ export default function Home() {
   };
 
   const subscribe = () => {
-    const handleInserts = () => {
+    const handleInserts = (data: any) => {
+      fetch("/voice", {
+        method: "POST",
+        body: JSON.stringify({ name: data.new.name }),
+      });
       refresh();
     };
 
-    // Listen to inserts
     supabase
       .channel("yearend2023")
       .on(
