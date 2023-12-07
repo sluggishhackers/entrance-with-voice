@@ -21,69 +21,51 @@ export default function Home() {
     e.preventDefault();
     setName("");
     setOrg("");
-    window.alert("등록 완료!");
+
+    (document.getElementById("my_modal_1") as HTMLFormElement).showModal();
 
     await fetch(
       `/submit?name=${encodeURIComponent(name)}&org=${encodeURIComponent(org)}`
     );
   };
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div>
-        <form onSubmit={handleSubmit}>
-          <input
-            name="name"
-            onChange={handleChange}
-            value={name}
-            placeholder="참석자명"
-          />
-          <input
-            name="org"
-            onChange={handleChange}
-            value={org}
-            placeholder="소속(선택)"
-          />
-          <button type="submit">전송</button>
-        </form>
+    <main className="flex min-h-screen flex-col items-center p-24">
+      <dialog id="my_modal_1" className="modal">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">환영합니다!</h3>
+          <div className="modal-action">
+            <form method="dialog">
+              <button className="btn">Close</button>
+            </form>
+          </div>
+        </div>
+      </dialog>
+      <div className="w-full prose">
+        <h1>
+          슬러기시 해커스
+          <br />
+          게으르고 발그레한 연말 파티
+        </h1>
       </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>게으르고</h2>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>발그레한</h2>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>슬러기시 해커스</h2>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>연말파티</h2>
-        </a>
-      </div>
+      <form onSubmit={handleSubmit}>
+        <input
+          name="name"
+          onChange={handleChange}
+          value={name}
+          placeholder="참석자명"
+          className="input input-bordered w-full"
+        />
+        <input
+          name="org"
+          onChange={handleChange}
+          value={org}
+          placeholder="소속(선택)"
+          className="input input-bordered w-full"
+        />
+        <button className="btn w-full" type="submit">
+          참석 확인하기
+        </button>
+      </form>
     </main>
   );
 }

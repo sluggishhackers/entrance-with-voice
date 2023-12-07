@@ -4,8 +4,6 @@ import { createClient } from "@supabase/supabase-js";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-const { NEXT_PUBLIC_TABLE_NAME } = process.env;
-
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL as string,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string
@@ -18,7 +16,7 @@ export default function Home() {
 
   const refresh = async () => {
     const { data } = await supabase
-      .from(NEXT_PUBLIC_TABLE_NAME as string)
+      .from(process.env.NEXT_PUBLIC_TABLE_NAME as string)
       .select("*");
     setParticipants(data as { name: string; org?: string }[]);
   };
@@ -33,7 +31,11 @@ export default function Home() {
       .channel("yearend2023")
       .on(
         "postgres_changes",
-        { event: "INSERT", schema: "public", table: NEXT_PUBLIC_TABLE_NAME },
+        {
+          event: "INSERT",
+          schema: "public",
+          table: process.env.NEXT_PUBLIC_TABLE_NAME,
+        },
         handleInserts
       )
       .subscribe();
@@ -60,7 +62,7 @@ export default function Home() {
       <div className="grid text-center lg:max-w-5xl lg:w-full lg:text-left">
         <p className="text-2xl font-bold">
           {participants
-            .map((p) => `${p.name}${p.org ? `-${p.org}` : ""}`)
+            .map((p) => `${p.org ? `${p.org} - ` : ""}${p.name}`)
             .join(", ")}
         </p>
       </div>
