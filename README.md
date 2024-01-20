@@ -50,10 +50,11 @@
 
 1. 위 `Deploy` 버튼을 클릭합니다.
 2. 필요한 환경변수를 입력합니다.
-   - SUPABASE_KEY: service_role/secret
-   - NEXT_PUBLIC_SUPABASE_URL: URL
-   - NEXT_PUBLIC_SUPABASE_ANON_KEY: anon/public
-   - NEXT_PUBLIC_ORG_NAME: 조직명
+
+   - `SUPABASE_KEY`: service_role/secret
+   - `NEXT_PUBLIC_SUPABASE_URL`: URL
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`: anon/public
+   - `NEXT_PUBLIC_ORG_NAME`: 조직명
 
 ### 4. GCP text-to-speech API 등록하기 (선택)
 
