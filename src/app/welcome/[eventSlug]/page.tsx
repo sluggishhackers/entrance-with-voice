@@ -1,43 +1,53 @@
 "use client";
 
 import { createClient } from "@supabase/supabase-js";
+import Head from "next/head";
 import Image from "next/image";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL as string,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string
-);
+const TABLE_NAME = process.env.NEXT_PUBLIC_TABLE_NAME || "participants";
 
 export default function Home() {
+  const params = useParams();
   const [participants, setParticipants] = useState<
     { name: string; org?: string }[]
   >([]);
 
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL as string,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string
+  );
+
   const refresh = async () => {
     const { data } = await supabase
       .from(process.env.NEXT_PUBLIC_TABLE_NAME as string)
-      .select("*");
-    setParticipants(data as { name: string; org?: string }[]);
+      .select("*")
+      .eq("event_slug", params.eventSlug);
+
+    setParticipants((data as { name: string; org?: string }[]) || []);
   };
 
   const subscribe = () => {
     const handleInserts = (data: any) => {
-      fetch("/voice", {
-        method: "POST",
-        body: JSON.stringify({ name: data.new.name }),
-      });
+      if (process.env.NEXT_PUBLIC_WITH_GOOGLE_VOICE === "on") {
+        fetch("/voice", {
+          method: "POST",
+          body: JSON.stringify({ name: data.new.name }),
+        });
+      }
+
       refresh();
     };
 
     supabase
-      .channel("yearend2023")
+      .channel(TABLE_NAME)
       .on(
         "postgres_changes",
         {
           event: "INSERT",
           schema: "public",
-          table: process.env.NEXT_PUBLIC_TABLE_NAME,
+          table: TABLE_NAME,
         },
         handleInserts
       )

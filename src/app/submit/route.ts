@@ -9,12 +9,13 @@ const supabase = createClient(
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
+  const eventSlug = decodeURIComponent(searchParams.get("eventSlug") || "");
   const name = decodeURIComponent(searchParams.get("name") || "");
   const org = decodeURIComponent(searchParams.get("org") || "");
 
   await supabase
     .from(process.env.NEXT_PUBLIC_TABLE_NAME as string)
-    .insert({ name, org });
+    .insert({ name, org, event_slug: eventSlug });
 
   return Response.json({ meessage: "welcome!" });
 }
