@@ -19,7 +19,7 @@ export default function Home() {
 
   const refresh = async () => {
     const { data } = await supabase
-      .from(process.env.NEXT_PUBLIC_TABLE_NAME as string)
+      .from(TABLE_NAME)
       .select("*")
       .eq("event_slug", params.eventSlug);
 

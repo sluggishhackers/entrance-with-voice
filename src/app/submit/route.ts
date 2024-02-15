@@ -7,15 +7,18 @@ const supabase = createClient(
   process.env.SUPABASE_KEY as string
 );
 
+const TABLE_NAME = process.env.NEXT_PUBLIC_TABLE_NAME || "participants";
+
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const eventSlug = decodeURIComponent(searchParams.get("eventSlug") || "");
   const name = decodeURIComponent(searchParams.get("name") || "");
   const org = decodeURIComponent(searchParams.get("org") || "");
+  const contact = decodeURIComponent(searchParams.get("contact") || "");
 
   await supabase
-    .from(process.env.NEXT_PUBLIC_TABLE_NAME as string)
-    .insert({ name, org, event_slug: eventSlug });
+    .from(TABLE_NAME)
+    .insert({ name, org, contact, event_slug: eventSlug });
 
-  return Response.json({ meessage: "welcome!" });
+  return Response.json({ meessage: "반갑습니다!" });
 }

@@ -8,6 +8,7 @@ export default function Home() {
   const params = useParams();
   const [name, setName] = useState("");
   const [org, setOrg] = useState("");
+  const [contact, setContact] = useState("");
 
   const handleChange = (e: any) => {
     switch (e.target.name) {
@@ -17,6 +18,9 @@ export default function Home() {
       case "org":
         setOrg(e.target.value);
         break;
+      case "contact":
+        setOrg(e.target.value);
+        break;
     }
   };
 
@@ -24,13 +28,14 @@ export default function Home() {
     e.preventDefault();
     setName("");
     setOrg("");
+    setContact("");
 
     (document.getElementById("my_modal_1") as HTMLFormElement).showModal();
 
     await fetch(
       `/submit?eventSlug=${params.eventSlug}&name=${encodeURIComponent(
         name
-      )}&org=${encodeURIComponent(org)}`
+      )}&org=${encodeURIComponent(org)}&contact=${encodeURIComponent(contact)}`
     );
   };
   return (
@@ -40,7 +45,7 @@ export default function Home() {
           <h3 className="font-bold text-lg">환영합니다!</h3>
           <div className="modal-action">
             <form method="dialog">
-              <button className="btn">Close</button>
+              <button className="btn">확인</button>
             </form>
           </div>
         </div>
@@ -59,6 +64,7 @@ export default function Home() {
           placeholder="참석자명"
           className="input input-bordered w-full"
         />
+
         <input
           name="org"
           onChange={handleChange}
@@ -66,6 +72,15 @@ export default function Home() {
           placeholder="소속(선택)"
           className="input input-bordered w-full"
         />
+
+        <input
+          name="contact"
+          onChange={handleChange}
+          value={contact}
+          placeholder="연락처(선택)"
+          className="input input-bordered w-full"
+        />
+
         <button className="btn w-full" type="submit">
           참석 확인하기
         </button>
